@@ -1,0 +1,23 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: rabbitmq-consumer
+  rabbitmq:
+    addresses: 127.0.0.1
+    username: guest
+    password: guest
+    port: 5672
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: ayao-default
+#          group: group1 #设置消息的组名称（同名组中的多个消费者，只有一个去消费消息
+#          consumer:
+#            partitioned: true #开启分区
+      binders:
+        defaultRabbit:
+          type: rabbit
+#      instance-count: 2 #消费者总数
+#      instance-index: 0 #消费者索引

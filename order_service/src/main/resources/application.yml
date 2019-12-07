@@ -1,0 +1,57 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: service-order #服务名称
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springcloud?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false
+    userName: root
+    password: 199509
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    port: 6379
+    database: 1
+    host: 127.0.0.1
+#  zipkin:
+#    base-url: http://127.0.0.1:9411/
+#    sender:
+#      type: web #数据传输的方式，以http的形式向server端发送数据
+#  sleuth:
+#    sampler:
+#      probability: 1 #采样比 收集日志信息的比例
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+#配置eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+#配置feign日志输出
+#日志配置 NONE：不输出日志（高） BASIC:适用于生产环境追踪问题
+#HEADERS:在BASIC的基础上，记录请求和响应头信息 FULL:记录所有
+feign:
+  client:
+    config:
+      service-product: #需要调用服务的名称
+        loggerLevel: FULL
+  hystrix:
+    enabled: true #开启对hystrix的支持
+
+
+logging:
+  level:
+    com.ayao.order_service.feign.ProductFeignClient: debug
+    root: info
+    org.springframework.web.servlet.DispatcherServlet: debug
+    org.springframework.cloud.sleuth: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

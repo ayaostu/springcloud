@@ -1,0 +1,45 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: gateway-server
+  redis:
+    host: localhost
+    database: 0
+    port: 6379
+#  zipkin:
+#    base-url: http://127.0.0.1:9411/
+#    sender:
+#      type: web #数据传输的方式，以http的形式向server端发送数据
+#  sleuth:
+#    sampler:
+#      probability: 1 #采样比 收集日志信息的比例
+  #配置springCloudGateway的路由
+  cloud:
+    gateway:
+      routes:
+        #配置路由：路由ID，路由到微服务的URI，断言（判断条件）
+      - id: product-service
+#        uri: http://127.0.0.1:9002 #目标微服务请求地址
+        uri: lb://service-product #lb:// 根据微服务名称从注册中心拉取服务请求路径（动态路由）
+        predicates:
+        - Path=/item/** #路由条件
+#        - Path=/product-service/**
+#        filters: #配置过滤器 http://127.0.0.1:8800/product-service/** -->http://127.0.0.1:9002/**
+#        - RewritePath=/product-service/(?<segment>.*), /$\{segment} #路径重写的过滤器，在yml中$写为$\
+      #配置自动的根据微服务名称进行路由转发
+      discovery:
+        locator:
+          enabled: true #开启根据服务名称自动转发
+          lower-case-service-id: true #微服务名称以小写形式呈现
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka/
+  instance:
+    prefer-ip-address: true
+logging:
+  level:
+    root: info
+    org.springframework.web.servlet.DispatcherServlet: debug
+    org.springframework.cloud.sleuth: debug

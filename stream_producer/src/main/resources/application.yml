@@ -1,0 +1,21 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: rabbitmq-producer #指定服务名称
+  rabbitmq:
+    addresses: 127.0.0.1
+    username: guest
+    password: guest
+    port: 5672
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: ayao-default #指定消息发送目的地，在rabbitmq中，发送到ayao-default的exchange中
+#          producer:
+#            partition-key-expression: payload #分区关键字
+#            partition-count: 2 #分区大小，即几个消费者
+      binders: #配置绑定器
+        defaultRabbit:
+          type: rabbit

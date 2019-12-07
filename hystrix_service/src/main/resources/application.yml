@@ -1,0 +1,14 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: service-hystrix
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka/
+  instance:
+    prefer-ip-address: true
+turbine:
+  app-config: service-order,service-user #配置Eureka中的serviceId列表，表明监控哪些服务，多个用逗号隔开
+  cluster-name-expression: "'default'"
